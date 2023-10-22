@@ -14,18 +14,17 @@ class CRUSHDEPTH_API AGS_Core : public AGameStateBase
 {
 	GENERATED_BODY()
 	
-private:
-	float CurrentSubmarineHealth;
 
 public:
-	float SubmarineStartHealth = 100.f;
-	
-	AGS_Core();
+	static constexpr float SubmarineStartHealth = 100.f;
+	static inline float CurrentSubmarineHealth = SubmarineStartHealth;
+
+	AGS_Core() = default;
 
 	UFUNCTION(BlueprintCallable, Category="Submarine")
-	float GetSubmarineHealth();
+	static float GetSubmarineHealth();
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
-	void SetSubmarineHealth(float NewHealth);
+	static void SetSubmarineHealth(float NewHealth);
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
-	void SubtractSubmarineHealth(float Amount);
+	static void SubtractSubmarineHealth(float Amount);
 };
