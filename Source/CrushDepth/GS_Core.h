@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Config=GlobalVariables)
 class CRUSHDEPTH_API AGS_Core : public AGameStateBase
 {
 	GENERATED_BODY()
