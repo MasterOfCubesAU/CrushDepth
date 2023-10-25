@@ -24,6 +24,29 @@ void UShopWidget::NativeConstruct() {
 	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox1);
 	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox2);
 
+	MoneyUpgradeButton->SetButtonName("Money");
+	MoneyUpgradeButton->SetShopWidgetInstance(this);
+	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox1);
+	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox2);
+
+	// Initialise cost for Health Upgrade
+	if (HealthUpgradeCost->GetText().ToString().IsEmpty()) {
+		HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][0]));
+	}
+
+	if (SpeedUpgradeCost->GetText().ToString().IsEmpty()) {
+		SpeedUpgradeCost->SetText(FText::AsNumber(Costs["Speed"][0]));
+	}
+
+	if (TaskRateUpgradeCost->GetText().ToString().IsEmpty()) {
+		TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][0]));
+	}
+
+	if (MoneyUpgradeCost->GetText().ToString().IsEmpty()) {
+		MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][0]));
+	}
+
+	// Conditions for upgrade buttons 
 	if (SpeedUpgradeButton) {
 		SpeedUpgradeButton->OnHovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonHovered);
 		SpeedUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
@@ -45,17 +68,11 @@ void UShopWidget::NativeConstruct() {
 		TaskRateUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
 	}
 
-	// Initialise cost for Health Upgrade
-	if (HealthUpgradeCost->GetText().ToString().IsEmpty()) {
-		HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][0]));
-	}
+	if (MoneyUpgradeButton) {
+		MoneyUpgradeButton->OnHovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonHovered);
+		MoneyUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
 
-	if (SpeedUpgradeCost->GetText().ToString().IsEmpty()) {
-		SpeedUpgradeCost->SetText(FText::AsNumber(Costs["Speed"][0]));
-	}
-
-	if (TaskRateUpgradeCost->GetText().ToString().IsEmpty()) {
-		TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][0]));
+		MoneyUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
 	}
 
 	if (BuyButton) {
@@ -65,6 +82,7 @@ void UShopWidget::NativeConstruct() {
 		CancelButton->OnClicked.AddDynamic(this, &UShopWidget::SetScreenNormal);
 	}
 }
+
 
 void UShopWidget::OnUpgradeButtonHovered() {
 	/*BuyButton->SetVisibility(ESlateVisibility::Hidden);
@@ -84,6 +102,7 @@ void UShopWidget::OnUpgradeButtonUnhovered() {
 			DescriptionText->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+	UpgradeTitle->SetVisibility(ESlateVisibility::Hidden);
 }
 
 
@@ -141,11 +160,25 @@ void UShopWidget::OnBuyButtonClicked() {
 			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
 		}
 	}
+	else if (UShopWidget::GetCurrentClickedButton() == "Money") {
+		// If no more upgrade tiers, the buy button does nothing
+		if (MoneyUpgradeButton->GetTier() == Costs["Money"].Num()) return;
+
+		MoneyUpgradeTiers[MoneyUpgradeButton->GetTier()]->SetIsChecked(true);
+		MoneyUpgradeButton->UpgradeTier();
+		if (MoneyUpgradeButton->GetTier() == Costs["Money"].Num()) {
+			MoneyUpgradeCost->SetText(FText::FromString("MAX"));
+		}
+		else {
+			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
+		}
+	}
 	UShopWidget::SetScreenNormal();
 }
 
 void UShopWidget::SetScreenNormal() {
 	DescriptionText->SetVisibility(ESlateVisibility::Hidden);
+	UpgradeTitle->SetVisibility(ESlateVisibility::Hidden);
 	BuyButton->SetVisibility(ESlateVisibility::Hidden);
 	BuyButtonText->SetVisibility(ESlateVisibility::Hidden);
 
@@ -154,8 +187,6 @@ void UShopWidget::SetScreenNormal() {
 }
 
 UUpgradeButton::UUpgradeButton() {
-	tier = 0;
-
 	OnHovered.AddDynamic(this, &UUpgradeButton::OnGetName);
 
 	hover.AddDynamic(this, &UUpgradeButton::OnHover);
@@ -165,8 +196,10 @@ void UUpgradeButton::OnGetName() {
 	hover.Broadcast(this->GetButtonName());
 }
 
-void UUpgradeButton::OnHover(FString name) {
-	FString description = ShopWidgetInstance->GetDescriptions()[name];
+void UUpgradeButton::OnHover(FString button_name) {
+	FString description = ShopWidgetInstance->GetDescriptions()[button_name];
+	FString upgrade_name = ShopWidgetInstance->GetTitles()[button_name];
 	ShopWidgetInstance->SetDescriptionText(description);
-	ShopWidgetInstance->SetCurrentHoveredButton(name);
+	ShopWidgetInstance->SetUpgradeTitle(upgrade_name);
+	ShopWidgetInstance->SetCurrentHoveredButton(button_name);
 }

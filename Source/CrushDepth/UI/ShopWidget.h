@@ -50,7 +50,7 @@ public:
 	}
 
 private:
-	int32 tier;
+	int32 tier = 0;
 	FString ButtonName;
 	UShopWidget* ShopWidgetInstance;
 };
@@ -68,8 +68,17 @@ public:
 		DescriptionText->SetVisibility(ESlateVisibility::Visible);
 	}
 
+	void SetUpgradeTitle(FString title) {
+		UpgradeTitle->SetText(FText::FromString(title));
+		UpgradeTitle->SetVisibility(ESlateVisibility::Visible);
+	}
+
 	TMap<FString, FString> GetDescriptions() {
 		return Descriptions;
+	};
+
+	TMap<FString, FString> GetTitles() {
+		return UpgradeTitles;
 	};
 
 	TMap<FString, TArray<int32>> getCosts() {
@@ -90,8 +99,10 @@ public:
 
 protected:
 
-	UPROPERTY(meta = (BindWidget)) class UTextBlock* UpgradesTitle;
+	// Text variables
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* WidgetTitle;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* DescriptionText;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* UpgradeTitle;
 
 	// ALL HEALTH UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* HealthUpgradeButton;
@@ -110,6 +121,12 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* TaskRateUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox2;
+
+	// ALL DECREASE MONEY UPGRADE PROPERTIES
+	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* MoneyUpgradeButton;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* MoneyUpgradeCost;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox1;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox2;
 
 	// Buy and Cancel Button Components 
 	UPROPERTY(meta = (BindWidget))
@@ -141,14 +158,27 @@ private:
 		{"Speed", "Increase player speed"},
 		{"TaskRate", "Decrease task spawn rate"},
 		{"Money", "Increase money generation rate"},
-		{"Submarine_descent", "Increase submarine descend speed"},
+		{"SubmarineDescent", "Increase submarine descend speed"},
 		{"Oxygen", "Decrease rate of oxygen depletion"},
-		{"Max_Oxygen", "Increase max oxygen"}
+		{"MaxOxygen", "Increase max oxygen"}
+	};
+	TMap<FString, FString> UpgradeTitles = {
+		{"Health", "Submarine Robustness"},
+		{"Speed", "Agility"},
+		{"TaskRate", "Reliability"},
+		{"Money", "Credits Increase"},
+		{"SubmarineDescent", "Submarine Descent"},
+		{"OxygenEffectiveness", "Oxygen Tank Effectiveness"},
+		{"MaxOxygen", "Max Oxygen Supply"}
 	};
 	TMap<FString, TArray<int32>> Costs = {
 		{"Health", TArray<int32>{2, 4}},
 		{"Speed", TArray<int32>{3, 5}},
-		{"TaskRate", TArray<int32>{4, 6}}
+		{"TaskRate", TArray<int32>{4, 6}},
+		{"Money", TArray<int32>{4, 6}},
+		{"SubmarineDescent", TArray<int32>{4, 6}},
+		{"OxygenEffectivness", TArray<int32>{4, 6}},
+		{"MaxOxygen", TArray<int32>{4, 6}}
 	};
 
 	FString CurrentHoveredButton;
@@ -157,4 +187,5 @@ private:
 	TArray<class UCheckBox*> HealthUpgradeTiers;
 	TArray<class UCheckBox*> SpeedUpgradeTiers;
 	TArray<class UCheckBox*> TaskRateUpgradeTiers;
+	TArray<class UCheckBox*> MoneyUpgradeTiers;
 };
