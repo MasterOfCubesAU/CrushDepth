@@ -76,7 +76,7 @@ void UGlobalVariablesLibrary::SetMoneyGenerationRate(float MoneyGenerationRate) 
 }
 
 // ====================================================
-// ================= PLAYER VARIABLES =================
+// ============== ENVIRONMENT VARIABLES ===============
 // ====================================================
 float UGlobalVariablesLibrary::GetTaskSpawnRate() {
 	float TaskSpawnRate;
