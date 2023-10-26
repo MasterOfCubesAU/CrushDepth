@@ -3,6 +3,9 @@
 
 #include "GS_Core.h"
 
+AGS_Core::AGS_Core() {
+    GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineStartHealth"), SubmarineStartHealth, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
+}
 
 float AGS_Core::GetSubmarineHealth() {
     return CurrentSubmarineHealth;
