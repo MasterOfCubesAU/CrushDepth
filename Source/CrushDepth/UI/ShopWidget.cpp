@@ -29,6 +29,11 @@ void UShopWidget::NativeConstruct() {
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox1);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox2);
 
+	SubmarineDescentUpgradeButton->SetButtonName("SubmarineDescent");
+	SubmarineDescentUpgradeButton->SetShopWidgetInstance(this);
+	SubmarineDescentUpgradeTiers.Add(SubmarineDescentUpgradeCheckbox1);
+	SubmarineDescentUpgradeTiers.Add(SubmarineDescentUpgradeCheckbox2);
+
 	// Initialise cost for Health Upgrade
 	if (HealthUpgradeCost->GetText().ToString().IsEmpty()) {
 		HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][0]));
@@ -44,6 +49,10 @@ void UShopWidget::NativeConstruct() {
 
 	if (MoneyUpgradeCost->GetText().ToString().IsEmpty()) {
 		MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][0]));
+	}
+
+	if (SubmarineDescentUpgradeCost->GetText().ToString().IsEmpty()) {
+		SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][0]));
 	}
 
 	// Conditions for upgrade buttons 
@@ -73,6 +82,13 @@ void UShopWidget::NativeConstruct() {
 		MoneyUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
 
 		MoneyUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
+	}
+
+	if (SubmarineDescentUpgradeButton) {
+		SubmarineDescentUpgradeButton->OnHovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonHovered);
+		SubmarineDescentUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
+
+		SubmarineDescentUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
 	}
 
 	if (BuyButton) {
@@ -171,6 +187,19 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
+		}
+	}
+	else if (UShopWidget::GetCurrentClickedButton() == "SubmarineDescent") {
+		// If no more upgrade tiers, the buy button does nothing
+		if (SubmarineDescentUpgradeButton->GetTier() == Costs["SubmarineDescent"].Num()) return;
+
+		SubmarineDescentUpgradeTiers[SubmarineDescentUpgradeButton->GetTier()]->SetIsChecked(true);
+		SubmarineDescentUpgradeButton->UpgradeTier();
+		if (SubmarineDescentUpgradeButton->GetTier() == Costs["SubmarineDescent"].Num()) {
+			SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
+		}
+		else {
+			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
 		}
 	}
 	UShopWidget::SetScreenNormal();

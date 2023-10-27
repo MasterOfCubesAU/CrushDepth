@@ -128,6 +128,12 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox2;
 
+	// ALL DECREASE SUBMARINE DESCENT UPGRADE PROPERTIES
+	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* SubmarineDescentUpgradeButton;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* SubmarineDescentUpgradeCost;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox1;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox2;
+
 	// Buy and Cancel Button Components 
 	UPROPERTY(meta = (BindWidget))
 		class UButton* BuyButton;
@@ -188,4 +194,5 @@ private:
 	TArray<class UCheckBox*> SpeedUpgradeTiers;
 	TArray<class UCheckBox*> TaskRateUpgradeTiers;
 	TArray<class UCheckBox*> MoneyUpgradeTiers;
+	TArray<class UCheckBox*> SubmarineDescentUpgradeTiers;
 };
