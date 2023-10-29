@@ -20,7 +20,7 @@ private:
 	float AscentRate;
 	float DescentRate;
 	float CurrentSubmarineDepth;
-	static float BestSubmarineDepth;
+	float BestSubmarineDepth;
 	FTimerHandle DiveTimer;
 	SubmarineStates CurrentSubmarineState;
 
@@ -56,5 +56,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	bool ToggleDive();
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	void SetAscentRate(float NewRate);
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	void SetDescentRate(float NewRate);
 	
 };

@@ -91,3 +91,11 @@ void AGS_Core::DoDive() {
 void AGS_Core::StartAscent() {
     this->CurrentSubmarineState = SubmarineStates::Ascending;
 }
+
+void AGS_Core::SetAscentRate(float NewRate) {
+    this->AscentRate = NewRate;
+}
+
+void AGS_Core::SetDescentRate(float NewRate) {
+    this->DescentRate = NewRate;
+}
