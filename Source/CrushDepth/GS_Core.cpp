@@ -9,7 +9,7 @@ AGS_Core::AGS_Core() {
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineDescentRate"), this->DescentRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     this->CurrentSubmarineHealth = this->SubmarineStartHealth;
     this->CurrentSubmarineDepth = 0.f;
-    this->BestSubmarineDepth = CurrentSubmarineDepth;
+    this->CurrentBestAttempt = CurrentSubmarineDepth;
     this->CurrentSubmarineState = SubmarineStates::Surfaced;
     // Seed random
     srand(time(0));
@@ -35,8 +35,8 @@ float AGS_Core::GetSubmarineDepth() {
     return this->CurrentSubmarineDepth;
 };
 
-float AGS_Core::GetBestSubmarineDepth() {
-    return this->BestSubmarineDepth;
+float AGS_Core::GetCurrentBestAttempt() {
+    return this->CurrentBestAttempt;
 };
 
 // Submarine States
@@ -82,9 +82,9 @@ void AGS_Core::DoDive() {
         GetWorld()->GetTimerManager().ClearTimer(DiveTimer);
     }
     // Update best attempt
-    if (this->CurrentSubmarineDepth > this->BestSubmarineDepth)
+    if (this->CurrentSubmarineDepth > this->CurrentBestAttempt)
     {
-        this->BestSubmarineDepth = this->CurrentSubmarineDepth;
+        this->CurrentBestAttempt = this->CurrentSubmarineDepth;
     }
 }
 
@@ -98,4 +98,20 @@ void AGS_Core::SetAscentRate(float NewRate) {
 
 void AGS_Core::SetDescentRate(float NewRate) {
     this->DescentRate = NewRate;
+}
+
+void AGS_Core::OnGameOver() {
+    // Save Best Attempt to file
+    float BestAttempt = this->GetBestAttempt();
+    if (this->CurrentBestAttempt > BestAttempt)
+    {
+        GConfig->SetFloat(TEXT("Stats"), TEXT("BestAttempt"), this->CurrentBestAttempt, FPaths::ProjectConfigDir() / TEXT("SaveData.ini"));
+        GConfig->Flush(false, FPaths::ProjectConfigDir() / TEXT("SaveData.ini"));
+    }
+}
+
+float AGS_Core::GetBestAttempt() {
+    float BestAttempt = 0;
+    GConfig->GetFloat(TEXT("Stats"), TEXT("BestAttempt"), BestAttempt, FPaths::ProjectConfigDir() / TEXT("SaveData.ini"));
+    return BestAttempt;
 }
