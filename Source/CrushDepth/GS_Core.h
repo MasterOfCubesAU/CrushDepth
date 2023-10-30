@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
 #include "SubmarineStatesEnum.h"
+#include "CD_PlayerState.h"
 #include "GS_Core.generated.h"
 
 /**
