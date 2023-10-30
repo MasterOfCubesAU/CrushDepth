@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
 #include "PlayerStatesEnum.h"
+#include "Public/Wallet.h"
 #include "CD_PlayerState.generated.h"
 
 /**
@@ -25,5 +26,5 @@ public:
 
 private:
 	PlayerStates state;
-
+	UWallet *wallet;
 };
