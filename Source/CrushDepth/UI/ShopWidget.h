@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include <Components/TextBlock.h>
 #include "Components/Button.h"
+#include "../Public/GlobalVariablesLibrary.h"
+
 #include "ShopWidget.generated.h"
 
 
@@ -159,23 +161,23 @@ protected:
 	void NativeConstruct() override;
 
 private:
-	TMap<FString, FString> Descriptions = {
-		{"Health", "Increase submarine health by 2"},
-		{"Speed", "Increase player speed"},
-		{"TaskRate", "Decrease task spawn rate"},
-		{"Money", "Increase money generation rate"},
-		{"SubmarineDescent", "Increase submarine descend speed"},
-		{"Oxygen", "Decrease rate of oxygen depletion"},
-		{"MaxOxygen", "Increase max oxygen"}
-	};
 	TMap<FString, FString> UpgradeTitles = {
-		{"Health", "Submarine Robustness"},
+		{"Health", "Submarine Durability"},
 		{"Speed", "Agility"},
 		{"TaskRate", "Reliability"},
 		{"Money", "Credits Increase"},
 		{"SubmarineDescent", "Submarine Descent"},
 		{"OxygenEffectiveness", "Oxygen Tank Effectiveness"},
 		{"MaxOxygen", "Max Oxygen Supply"}
+	};
+	TMap<FString, FString> Descriptions = {
+		{"Health", "Increase the durability of the submarine."},
+		{"Speed", "Increase your manoeuvrability within the submarine "},
+		{"TaskRate", "Decrease task spawn rate"},
+		{"Money", "Increase money generation rate"},
+		{"SubmarineDescent", "Increase submarine descend speed"},
+		{"Oxygen", "Decrease rate of oxygen depletion"},
+		{"MaxOxygen", "Increase max oxygen"}
 	};
 	TMap<FString, TArray<int32>> Costs = {
 		{"Health", TArray<int32>{2, 4}},

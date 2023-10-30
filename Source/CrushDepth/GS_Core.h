@@ -64,7 +64,13 @@ public:
 	void SetAscentRate(float NewRate);
 
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetAscentRate();
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void SetDescentRate(float NewRate);
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetDescentRate();
 	
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void OnGameOver();

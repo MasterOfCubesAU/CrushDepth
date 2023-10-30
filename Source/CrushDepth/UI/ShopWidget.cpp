@@ -5,6 +5,8 @@
 #include <Components/Button.h>
 #include <Components/TextBlock.h>
 #include <Components/CheckBox.h>
+#include "CrushDepth/GS_Core.h"
+#include "CrushDepth/Public/GlobalVariablesLibrary.h"
 
 void UShopWidget::NativeConstruct() {
 	Super::NativeConstruct();
@@ -136,17 +138,24 @@ void UShopWidget::OnUpgradeButtonClicked() {
 
 
 void UShopWidget::OnBuyButtonClicked() {
+	AGS_Core* const GameState = GetWorld() != NULL ? GetWorld()->GetGameState<AGS_Core>() : NULL;
+
 	if (UShopWidget::GetCurrentClickedButton() == "Health") {
 		// If no more upgrade tiers, the buy button does nothing
 		if (HealthUpgradeButton->GetTier() == Costs["Health"].Num()) return;
 
+		// Tick the corresponding check box
 		HealthUpgradeTiers[HealthUpgradeButton->GetTier()]->SetIsChecked(true);
 		HealthUpgradeButton->UpgradeTier();
+
+		// If there are no more tiers, set the text to MAX, otherwise change cost 
 		if (HealthUpgradeButton->GetTier() == Costs["Health"].Num()) {
 			HealthUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
 			HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][HealthUpgradeButton->GetTier()]));
+			float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
+			GameState->SetSubmarineHealth(CurrentSubmarineHealth + 200);
 		}
 		
 	}
@@ -174,6 +183,8 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
+			float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
+			UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
 		}
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Money") {
@@ -200,6 +211,8 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
+			float CurrentDescentRate = GameState->GetDescentRate();
+			GameState->SetDescentRate(CurrentDescentRate * 1.5);
 		}
 	}
 	UShopWidget::SetScreenNormal();

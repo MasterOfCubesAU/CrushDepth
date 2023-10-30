@@ -96,8 +96,16 @@ void AGS_Core::SetAscentRate(float NewRate) {
     this->AscentRate = NewRate;
 }
 
+float AGS_Core::GetAscentRate() {
+    return AscentRate
+}
+
 void AGS_Core::SetDescentRate(float NewRate) {
     this->DescentRate = NewRate;
+}
+
+float AGS_Core::GetDescentRate() {
+    return DescentRate
 }
 
 void AGS_Core::OnGameOver() {
