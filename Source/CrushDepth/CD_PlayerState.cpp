@@ -5,6 +5,7 @@
 
 ACD_PlayerState::ACD_PlayerState(){
 	this->state = PlayerStates::Normal;
+	this->wallet = NewObject<UWallet>(UWallet::StaticClass());
 }
 
 PlayerStates ACD_PlayerState::GetPlayerState() {
