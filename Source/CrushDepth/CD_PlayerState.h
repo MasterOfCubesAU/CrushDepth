@@ -23,8 +23,10 @@ public:
 	PlayerStates GetPlayerState();
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerState(PlayerStates NewState);
+	UPROPERTY(BlueprintReadWrite)
+	UWallet* wallet;
 
 private:
 	PlayerStates state;
-	UWallet *wallet;
+	
 };
