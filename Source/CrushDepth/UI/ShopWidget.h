@@ -6,8 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include <Components/TextBlock.h>
 #include "Components/Button.h"
-#include "../Public/GlobalVariablesLibrary.h"
-
 #include "ShopWidget.generated.h"
 
 
@@ -105,6 +103,7 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* WidgetTitle;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* DescriptionText;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* UpgradeTitle;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* MoneyText;
 
 	// ALL HEALTH UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* HealthUpgradeButton;

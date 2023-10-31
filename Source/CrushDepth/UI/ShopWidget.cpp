@@ -6,7 +6,10 @@
 #include <Components/TextBlock.h>
 #include <Components/CheckBox.h>
 #include "CrushDepth/GS_Core.h"
+#include "CrushDepth/Public/Wallet.h"
+#include "CrushDepth/CD_PlayerState.h"
 #include "CrushDepth/Public/GlobalVariablesLibrary.h"
+#include "GameFramework/PlayerState.h"
 
 void UShopWidget::NativeConstruct() {
 	Super::NativeConstruct();
@@ -30,6 +33,8 @@ void UShopWidget::NativeConstruct() {
 	MoneyUpgradeButton->SetShopWidgetInstance(this);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox1);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox2);
+
+	MoneyText->SetText(FText::AsNumber(((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance()));
 
 	SubmarineDescentUpgradeButton->SetButtonName("SubmarineDescent");
 	SubmarineDescentUpgradeButton->SetShopWidgetInstance(this);
