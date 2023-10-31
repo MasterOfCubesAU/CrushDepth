@@ -86,6 +86,26 @@ void AGS_Core::DoDive() {
     {
         this->CurrentBestAttempt = this->CurrentSubmarineDepth;
     }
+    // Update player money
+    // Don't distribute money if less than midpoint of current best attempt.
+    if (this->CurrentSubmarineState != SubmarineStates::Descending || this->CurrentSubmarineDepth <= this->CurrentBestAttempt / 2.f)
+    {
+        return;
+    }
+    
+    // Iterate through all players and add money
+    for (FConstPlayerControllerIterator iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
+    {
+        APlayerController* Player = Cast<APlayerController>(*iterator);
+        
+        float BaseMoneyRate;
+        GConfig->GetFloat(TEXT("Player"), TEXT("MoneyGenerationRate"), BaseMoneyRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
+        float AmountToAdd = this->CurrentSubmarineDepth >= this->CurrentBestAttempt / 2.f && this->CurrentSubmarineDepth < this->CurrentBestAttempt ? BaseMoneyRate / 2.0 : BaseMoneyRate;
+
+        // Update Money
+        ((ACD_PlayerState*)Player->PlayerState)->wallet->AddBalance(AmountToAdd);
+    }
+    
 }
 
 void AGS_Core::StartAscent() {

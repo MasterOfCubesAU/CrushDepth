@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
 #include "PlayerStatesEnum.h"
+#include "Public/Wallet.h"
 #include "CD_PlayerState.generated.h"
 
 /**
@@ -22,8 +23,10 @@ public:
 	PlayerStates GetPlayerState();
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerState(PlayerStates NewState);
+	UPROPERTY(BlueprintReadWrite)
+	UWallet* wallet;
 
 private:
 	PlayerStates state;
-
+	
 };
