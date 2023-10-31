@@ -11,6 +11,11 @@
 #include "CrushDepth/Public/GlobalVariablesLibrary.h"
 #include "GameFramework/PlayerState.h"
 
+UUpgradeButton::UUpgradeButton() {
+	OnHovered.AddDynamic(this, &UUpgradeButton::OnGetName);
+	hover.AddDynamic(this, &UUpgradeButton::OnHover);
+}
+
 void UShopWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
@@ -108,11 +113,11 @@ void UShopWidget::NativeConstruct() {
 
 
 void UShopWidget::OnUpgradeButtonHovered() {
-	/*BuyButton->SetVisibility(ESlateVisibility::Hidden);
+	BuyButton->SetVisibility(ESlateVisibility::Hidden);
 	BuyButtonText->SetVisibility(ESlateVisibility::Hidden);
 
 	CancelButton->SetVisibility(ESlateVisibility::Hidden);
-	CancelButtonText->SetVisibility(ESlateVisibility::Hidden);*/
+	CancelButtonText->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UShopWidget::OnUpgradeButtonUnhovered() {
@@ -144,6 +149,7 @@ void UShopWidget::OnUpgradeButtonClicked() {
 
 void UShopWidget::OnBuyButtonClicked() {
 	AGS_Core* const GameState = GetWorld() != NULL ? GetWorld()->GetGameState<AGS_Core>() : NULL;
+	float Money = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance();
 
 	if (UShopWidget::GetCurrentClickedButton() == "Health") {
 		// If no more upgrade tiers, the buy button does nothing
@@ -151,6 +157,7 @@ void UShopWidget::OnBuyButtonClicked() {
 
 		// Tick the corresponding check box
 		HealthUpgradeTiers[HealthUpgradeButton->GetTier()]->SetIsChecked(true);
+		float CurrentCost = Costs["Health"][HealthUpgradeButton->GetTier()];
 		HealthUpgradeButton->UpgradeTier();
 
 		// If there are no more tiers, set the text to MAX, otherwise change cost 
@@ -158,35 +165,48 @@ void UShopWidget::OnBuyButtonClicked() {
 			HealthUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
+			// Get current money and set new money to be current money - upgrade cost
 			HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][HealthUpgradeButton->GetTier()]));
 			float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
-			GameState->SetSubmarineHealth(CurrentSubmarineHealth + 200);
+			GameState->SetSubmarineHealth(CurrentSubmarineHealth * 1.2);
 		}
-		
+		float NewMoney = Money - CurrentCost;
+		MoneyText->SetText(FText::AsNumber(NewMoney));
+		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Speed") {
 		// If no more upgrade tiers, the buy button does nothing
 		if (SpeedUpgradeButton->GetTier() == Costs["Speed"].Num()) return;
 
 		SpeedUpgradeTiers[SpeedUpgradeButton->GetTier()]->SetIsChecked(true);
+		float CurrentCost = Costs["Speed"][SpeedUpgradeButton->GetTier()];
 		SpeedUpgradeButton->UpgradeTier();
+
 		if (SpeedUpgradeButton->GetTier() == Costs["Speed"].Num()) {
 			SpeedUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
 			SpeedUpgradeCost->SetText(FText::AsNumber(Costs["Speed"][SpeedUpgradeButton->GetTier()]));
 		}
+		float NewMoney = Money - CurrentCost;
+		MoneyText->SetText(FText::AsNumber(NewMoney));
+		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "TaskRate") {
 		// If no more upgrade tiers, the buy button does nothing
 		if (TaskRateUpgradeButton->GetTier() == Costs["TaskRate"].Num()) return;
 
 		TaskRateUpgradeTiers[TaskRateUpgradeButton->GetTier()]->SetIsChecked(true);
+		float CurrentCost = Costs["TaskRate"][TaskRateUpgradeButton->GetTier()];
 		TaskRateUpgradeButton->UpgradeTier();
+
 		if (TaskRateUpgradeButton->GetTier() == Costs["TaskRate"].Num()) {
 			TaskRateUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
+			float NewMoney = Money - CurrentCost;
+			MoneyText->SetText(FText::AsNumber(NewMoney));
+			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
 			float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
 			UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
@@ -197,11 +217,16 @@ void UShopWidget::OnBuyButtonClicked() {
 		if (MoneyUpgradeButton->GetTier() == Costs["Money"].Num()) return;
 
 		MoneyUpgradeTiers[MoneyUpgradeButton->GetTier()]->SetIsChecked(true);
+		float CurrentCost = Costs["Money"][MoneyUpgradeButton->GetTier()];
 		MoneyUpgradeButton->UpgradeTier();
+
 		if (MoneyUpgradeButton->GetTier() == Costs["Money"].Num()) {
 			MoneyUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
+			float NewMoney = Money - CurrentCost;
+			MoneyText->SetText(FText::AsNumber(NewMoney));
+			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
 		}
 	}
@@ -210,11 +235,16 @@ void UShopWidget::OnBuyButtonClicked() {
 		if (SubmarineDescentUpgradeButton->GetTier() == Costs["SubmarineDescent"].Num()) return;
 
 		SubmarineDescentUpgradeTiers[SubmarineDescentUpgradeButton->GetTier()]->SetIsChecked(true);
+		float CurrentCost = Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()];
 		SubmarineDescentUpgradeButton->UpgradeTier();
+
 		if (SubmarineDescentUpgradeButton->GetTier() == Costs["SubmarineDescent"].Num()) {
 			SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
+			float NewMoney = Money - CurrentCost;
+			MoneyText->SetText(FText::AsNumber(NewMoney));
+			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
 			float CurrentDescentRate = GameState->GetDescentRate();
 			GameState->SetDescentRate(CurrentDescentRate * 1.5);
@@ -233,11 +263,6 @@ void UShopWidget::SetScreenNormal() {
 	CancelButtonText->SetVisibility(ESlateVisibility::Hidden);
 }
 
-UUpgradeButton::UUpgradeButton() {
-	OnHovered.AddDynamic(this, &UUpgradeButton::OnGetName);
-
-	hover.AddDynamic(this, &UUpgradeButton::OnHover);
-}
 
 void UUpgradeButton::OnGetName() {
 	hover.Broadcast(this->GetButtonName());
