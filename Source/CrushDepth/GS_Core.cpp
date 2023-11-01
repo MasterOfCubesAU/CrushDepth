@@ -11,6 +11,7 @@ AGS_Core::AGS_Core() {
     this->CurrentSubmarineDepth = 0.f;
     this->CurrentBestAttempt = CurrentSubmarineDepth;
     this->CurrentSubmarineState = SubmarineStates::Surfaced;
+    GConfig->GetFloat(TEXT("Player"), TEXT("MoneyGenerationRate"), this->MoneyRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     // Seed random
     srand(time(0));
 }
@@ -100,8 +101,7 @@ void AGS_Core::DoDive() {
     {
         APlayerController* Player = Cast<APlayerController>(*iterator);
         
-        float BaseMoneyRate;
-        GConfig->GetFloat(TEXT("Player"), TEXT("MoneyGenerationRate"), BaseMoneyRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
+        float BaseMoneyRate = this->MoneyRate;
         float AmountToAdd = this->CurrentSubmarineDepth >= this->CurrentBestAttempt / 2.f && this->CurrentSubmarineDepth < this->CurrentBestAttempt ? BaseMoneyRate / 2.0 : BaseMoneyRate;
 
         // Update Money
@@ -118,8 +118,16 @@ void AGS_Core::SetAscentRate(float NewRate) {
     this->AscentRate = NewRate;
 }
 
+float AGS_Core::GetAscentRate() {
+    return AscentRate;
+}
+
 void AGS_Core::SetDescentRate(float NewRate) {
     this->DescentRate = NewRate;
+}
+
+float AGS_Core::GetDescentRate() {
+    return DescentRate;
 }
 
 void AGS_Core::OnGameOver() {
@@ -136,4 +144,12 @@ float AGS_Core::GetBestAttempt() {
     float BestAttempt = 0;
     GConfig->GetFloat(TEXT("Stats"), TEXT("BestAttempt"), BestAttempt, FPaths::ProjectConfigDir() / TEXT("SaveData.ini"));
     return BestAttempt;
+}
+
+float AGS_Core::GetMoneyRate() {
+    return MoneyRate;
+}
+
+void AGS_Core::SetMoneyRate(float NewRate) {
+    this->MoneyRate = NewRate;
 }
