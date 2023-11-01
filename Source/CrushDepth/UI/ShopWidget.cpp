@@ -204,13 +204,13 @@ void UShopWidget::OnBuyButtonClicked() {
 			TaskRateUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			float NewMoney = Money - CurrentCost;
-			MoneyText->SetText(FText::AsNumber(NewMoney));
-			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
 			float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
 			UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
 		}
+		float NewMoney = Money - CurrentCost;
+		MoneyText->SetText(FText::AsNumber(NewMoney));
+		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Money") {
 		// If no more upgrade tiers, the buy button does nothing
@@ -224,11 +224,11 @@ void UShopWidget::OnBuyButtonClicked() {
 			MoneyUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			float NewMoney = Money - CurrentCost;
-			MoneyText->SetText(FText::AsNumber(NewMoney));
-			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
 		}
+		float NewMoney = Money - CurrentCost;
+		MoneyText->SetText(FText::AsNumber(NewMoney));
+		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "SubmarineDescent") {
 		// If no more upgrade tiers, the buy button does nothing
@@ -242,13 +242,13 @@ void UShopWidget::OnBuyButtonClicked() {
 			SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			float NewMoney = Money - CurrentCost;
-			MoneyText->SetText(FText::AsNumber(NewMoney));
-			((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
 			float CurrentDescentRate = GameState->GetDescentRate();
 			GameState->SetDescentRate(CurrentDescentRate * 1.5);
 		}
+		float NewMoney = Money - CurrentCost;
+		MoneyText->SetText(FText::AsNumber(NewMoney));
+		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	UShopWidget::SetScreenNormal();
 }
