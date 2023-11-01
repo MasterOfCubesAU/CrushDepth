@@ -75,7 +75,9 @@ void AGS_Core::StartDescent() {
 void AGS_Core::DoDive() {
     float DiveRate;
     this->CurrentSubmarineState == SubmarineStates::Descending ? DiveRate = this->DescentRate :  DiveRate = -this->AscentRate;
-    this->CurrentSubmarineDepth = std::max(0.f, this->CurrentSubmarineDepth + DiveRate + std::rand() % 5 );
+
+    int MaxRand = std::abs(DiveRate) * 1.5;
+    this->CurrentSubmarineDepth = std::max(0.f, this->CurrentSubmarineDepth + DiveRate + (DiveRate > 0 ? 1 : -1) * (std::rand() % MaxRand) );
     if (this->CurrentSubmarineDepth == 0.f)
     {
         this->CurrentSubmarineState = SubmarineStates::Surfaced;
