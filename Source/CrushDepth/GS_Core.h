@@ -22,6 +22,7 @@ private:
 	float DescentRate;
 	float CurrentSubmarineDepth;
 	float CurrentBestAttempt;
+	float MoneyRate;
 	FTimerHandle DiveTimer;
 	SubmarineStates CurrentSubmarineState;
 
@@ -65,8 +66,20 @@ public:
 	void SetAscentRate(float NewRate);
 
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetAscentRate();
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void SetDescentRate(float NewRate);
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetDescentRate();
 	
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void OnGameOver();
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetMoneyRate();
+
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	void SetMoneyRate(float NewRate);
 };
