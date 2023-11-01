@@ -150,6 +150,7 @@ void UShopWidget::OnUpgradeButtonClicked() {
 void UShopWidget::OnBuyButtonClicked() {
 	AGS_Core* const GameState = GetWorld() != NULL ? GetWorld()->GetGameState<AGS_Core>() : NULL;
 	float Money = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance();
+	FString cost = "$";
 
 	if (UShopWidget::GetCurrentClickedButton() == "Health") {
 		// If no more upgrade tiers, the buy button does nothing
@@ -166,6 +167,7 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			// Get current money and set new money to be current money - upgrade cost
+			cost.Append(FString::FromInt(Costs["Health"][HealthUpgradeButton->GetTier()]));
 			HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][HealthUpgradeButton->GetTier()]));
 		}
 
