@@ -19,8 +19,13 @@ private:
 
 public:
 	UWallet();
+
+	UFUNCTION(BlueprintCallable, Category="Wallet")
 	float GetBalance();
+	UFUNCTION(BlueprintCallable, Category = "Wallet")
 	void SetBalance(float Amount);
+	UFUNCTION(BlueprintCallable, Category = "Wallet")
 	void SubtractBalance(float Amount);
+	UFUNCTION(BlueprintCallable, Category = "Wallet")
 	void AddBalance(float Amount);
 };
