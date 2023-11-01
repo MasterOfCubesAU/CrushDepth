@@ -167,9 +167,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		else {
 			// Get current money and set new money to be current money - upgrade cost
 			HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][HealthUpgradeButton->GetTier()]));
-			float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
-			GameState->SetSubmarineHealth(CurrentSubmarineHealth * 1.2);
 		}
+
+		float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
+		GameState->SetSubmarineHealth(CurrentSubmarineHealth * 1.2);
 		float NewMoney = Money - CurrentCost;
 		MoneyText->SetText(FText::AsNumber(NewMoney));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
@@ -205,9 +206,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
-			float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
-			UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
 		}
+		float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
+		UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
+
 		float NewMoney = Money - CurrentCost;
 		MoneyText->SetText(FText::AsNumber(NewMoney));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
@@ -226,6 +228,8 @@ void UShopWidget::OnBuyButtonClicked() {
 		else {
 			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
 		}
+		float CurrentMoneyRate = GameState->GetMoneyRate();
+		GameState->SetMoneyRate(CurrentMoneyRate * 1.1);
 		float NewMoney = Money - CurrentCost;
 		MoneyText->SetText(FText::AsNumber(NewMoney));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
@@ -243,9 +247,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
-			float CurrentDescentRate = GameState->GetDescentRate();
-			GameState->SetDescentRate(CurrentDescentRate * 1.5);
 		}
+
+		float CurrentDescentRate = GameState->GetDescentRate();
+		GameState->SetDescentRate(CurrentDescentRate * 1.2);
 		float NewMoney = Money - CurrentCost;
 		MoneyText->SetText(FText::AsNumber(NewMoney));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
