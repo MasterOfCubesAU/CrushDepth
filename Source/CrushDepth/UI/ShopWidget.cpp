@@ -39,7 +39,10 @@ void UShopWidget::NativeConstruct() {
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox1);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox2);
 
-	MoneyText->SetText(FText::AsNumber(((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance()));
+	FString MoneyString = "$";
+	int32 RoundMoney = FMath::FloorToInt((((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance()));
+	MoneyString.Append(FString::FromInt(RoundMoney));
+	MoneyText->SetText(FText::FromString(MoneyString));
 
 	SubmarineDescentUpgradeButton->SetButtonName("SubmarineDescent");
 	SubmarineDescentUpgradeButton->SetShopWidgetInstance(this);
@@ -48,23 +51,33 @@ void UShopWidget::NativeConstruct() {
 
 	// Initialise cost for Health Upgrade
 	if (HealthUpgradeCost->GetText().ToString().IsEmpty()) {
-		HealthUpgradeCost->SetText(FText::AsNumber(Costs["Health"][0]));
+		FString Cost = "$";
+		Cost.Append(FString::FromInt(Costs["Health"][0]));
+		HealthUpgradeCost->SetText(FText::FromString(Cost));
 	}
 
 	if (SpeedUpgradeCost->GetText().ToString().IsEmpty()) {
-		SpeedUpgradeCost->SetText(FText::AsNumber(Costs["Speed"][0]));
+		FString Cost = "$";
+		Cost.Append(FString::FromInt(Costs["Speed"][0]));
+		SpeedUpgradeCost->SetText(FText::FromString(Cost));
 	}
 
 	if (TaskRateUpgradeCost->GetText().ToString().IsEmpty()) {
-		TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][0]));
+		FString Cost = "$";
+		Cost.Append(FString::FromInt(Costs["TaskRate"][0]));
+		TaskRateUpgradeCost->SetText(FText::FromString(Cost));
 	}
 
 	if (MoneyUpgradeCost->GetText().ToString().IsEmpty()) {
-		MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][0]));
+		FString Cost = "$";
+		Cost.Append(FString::FromInt(Costs["Money"][0]));
+		MoneyUpgradeCost->SetText(FText::FromString(Cost));
 	}
 
 	if (SubmarineDescentUpgradeCost->GetText().ToString().IsEmpty()) {
-		SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][0]));
+		FString Cost = "$";
+		Cost.Append(FString::FromInt(Costs["SubmarineDescent"][0]));
+		SubmarineDescentUpgradeCost->SetText(FText::FromString(Cost));
 	}
 
 	// Conditions for upgrade buttons 
@@ -150,6 +163,8 @@ void UShopWidget::OnUpgradeButtonClicked() {
 void UShopWidget::OnBuyButtonClicked() {
 	AGS_Core* const GameState = GetWorld() != NULL ? GetWorld()->GetGameState<AGS_Core>() : NULL;
 	float Money = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance();
+	FString cost = "$";
+	FString DollarSign = TEXT("$");
 
 	if (UShopWidget::GetCurrentClickedButton() == "Health") {
 		// If no more upgrade tiers, the buy button does nothing
@@ -166,7 +181,6 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 		else {
 			// Get current money and set new money to be current money - upgrade cost
-			FString cost = "$";
 			cost.Append(FString::FromInt(Costs["Health"][HealthUpgradeButton->GetTier()]));
 			HealthUpgradeCost->SetText(FText::FromString(cost));
 		}
@@ -174,7 +188,8 @@ void UShopWidget::OnBuyButtonClicked() {
 		float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
 		GameState->SetSubmarineHealth(CurrentSubmarineHealth * 1.2);
 		float NewMoney = Money - CurrentCost;
-		MoneyText->SetText(FText::AsNumber(NewMoney));
+		FString NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+		MoneyText->SetText(FText::FromString(DollarSign + NewMoneyString));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Speed") {
@@ -189,10 +204,12 @@ void UShopWidget::OnBuyButtonClicked() {
 			SpeedUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			SpeedUpgradeCost->SetText(FText::AsNumber(Costs["Speed"][SpeedUpgradeButton->GetTier()]));
+			cost.Append(FString::FromInt(Costs["Speed"][SpeedUpgradeButton->GetTier()]));
+			SpeedUpgradeCost->SetText(FText::FromString(cost));
 		}
 		float NewMoney = Money - CurrentCost;
-		MoneyText->SetText(FText::AsNumber(NewMoney));
+		FString NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+		MoneyText->SetText(FText::FromString(DollarSign + NewMoneyString));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "TaskRate") {
@@ -207,13 +224,15 @@ void UShopWidget::OnBuyButtonClicked() {
 			TaskRateUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			TaskRateUpgradeCost->SetText(FText::AsNumber(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
+			cost.Append(FString::FromInt(Costs["TaskRate"][TaskRateUpgradeButton->GetTier()]));
+			TaskRateUpgradeCost->SetText(FText::FromString(cost));
 		}
 		float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
 		UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
 
 		float NewMoney = Money - CurrentCost;
-		MoneyText->SetText(FText::AsNumber(NewMoney));
+		FString NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+		MoneyText->SetText(FText::FromString(DollarSign + NewMoneyString));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Money") {
@@ -228,12 +247,14 @@ void UShopWidget::OnBuyButtonClicked() {
 			MoneyUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			MoneyUpgradeCost->SetText(FText::AsNumber(Costs["Money"][MoneyUpgradeButton->GetTier()]));
+			cost.Append(FString::FromInt(Costs["Money"][MoneyUpgradeButton->GetTier()]));
+			MoneyUpgradeCost->SetText(FText::FromString(cost));
 		}
 		float CurrentMoneyRate = GameState->GetMoneyRate();
 		GameState->SetMoneyRate(CurrentMoneyRate * 1.1);
 		float NewMoney = Money - CurrentCost;
-		MoneyText->SetText(FText::AsNumber(NewMoney));
+		FString NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+		MoneyText->SetText(FText::FromString(DollarSign + NewMoneyString));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "SubmarineDescent") {
@@ -248,13 +269,15 @@ void UShopWidget::OnBuyButtonClicked() {
 			SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
 		}
 		else {
-			SubmarineDescentUpgradeCost->SetText(FText::AsNumber(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
+			cost.Append(FString::FromInt(Costs["SubmarineDescent"][SubmarineDescentUpgradeButton->GetTier()]));
+			SubmarineDescentUpgradeCost->SetText(FText::FromString(cost));
 		}
 
 		float CurrentDescentRate = GameState->GetDescentRate();
 		GameState->SetDescentRate(CurrentDescentRate * 1.2);
 		float NewMoney = Money - CurrentCost;
-		MoneyText->SetText(FText::AsNumber(NewMoney));
+		FString NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+		MoneyText->SetText(FText::FromString(DollarSign + NewMoneyString));
 		((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->SetBalance(NewMoney);
 	}
 	UShopWidget::SetScreenNormal();
