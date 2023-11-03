@@ -41,8 +41,8 @@ void UShopWidget::NativeConstruct() {
 
 	FString MoneyString = "$";
 	int32 RoundMoney = FMath::FloorToInt((((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance()));
-	MoneyString.Append(FString::FromInt(RoundMoney));
-	MoneyText->SetText(FText::FromString(MoneyString));
+	// MoneyString.Append(FString::FromInt(RoundMoney));
+	MoneyText->SetText(FText::FromString(MoneyString + FString::FromInt(RoundMoney)));
 
 	SubmarineDescentUpgradeButton->SetButtonName("SubmarineDescent");
 	SubmarineDescentUpgradeButton->SetShopWidgetInstance(this);
@@ -51,33 +51,23 @@ void UShopWidget::NativeConstruct() {
 
 	// Initialise cost for Health Upgrade
 	if (HealthUpgradeCost->GetText().ToString().IsEmpty()) {
-		FString Cost = "$";
-		Cost.Append(FString::FromInt(Costs["Health"][0]));
-		HealthUpgradeCost->SetText(FText::FromString(Cost));
+		HealthUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Health"][0])));
 	}
 
 	if (SpeedUpgradeCost->GetText().ToString().IsEmpty()) {
-		FString Cost = "$";
-		Cost.Append(FString::FromInt(Costs["Speed"][0]));
-		SpeedUpgradeCost->SetText(FText::FromString(Cost));
+		SpeedUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Speed"][0])));
 	}
 
 	if (TaskRateUpgradeCost->GetText().ToString().IsEmpty()) {
-		FString Cost = "$";
-		Cost.Append(FString::FromInt(Costs["TaskRate"][0]));
-		TaskRateUpgradeCost->SetText(FText::FromString(Cost));
+		TaskRateUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["TaskRate"][0])));
 	}
 
 	if (MoneyUpgradeCost->GetText().ToString().IsEmpty()) {
-		FString Cost = "$";
-		Cost.Append(FString::FromInt(Costs["Money"][0]));
-		MoneyUpgradeCost->SetText(FText::FromString(Cost));
+		MoneyUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Money"][0])));
 	}
 
 	if (SubmarineDescentUpgradeCost->GetText().ToString().IsEmpty()) {
-		FString Cost = "$";
-		Cost.Append(FString::FromInt(Costs["SubmarineDescent"][0]));
-		SubmarineDescentUpgradeCost->SetText(FText::FromString(Cost));
+		SubmarineDescentUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["SubmarineDescent"][0])));
 	}
 
 	// Conditions for upgrade buttons 
