@@ -34,6 +34,15 @@ private:
 	float CurrentSubmarineHealth;
 	float SubmarineStartHealth;
 
+	// Shop 
+	TMap<FString, int32> UpgradeTiers = {
+		{"Health", 0},
+		{"Speed", 0},
+		{"TaskRate", 0},
+		{"Money", 0},
+		{"SubmarineDescent", 0},
+	};
+
 public:
 	AGS_Core();
 
@@ -82,4 +91,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void SetMoneyRate(float NewRate);
+
+	// Shop
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	int32 GetUpgradeTier(FString UpgradeType);
+
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	void SetUpgradeTier(FString UpgradeType, int32 Tier);
 };

@@ -153,3 +153,11 @@ float AGS_Core::GetMoneyRate() {
 void AGS_Core::SetMoneyRate(float NewRate) {
     this->MoneyRate = NewRate;
 }
+
+int32 AGS_Core::GetUpgradeTier(FString UpgradeType) {
+    return UpgradeTiers[UpgradeType];
+}
+
+void AGS_Core::SetUpgradeTier(FString UpgradeType, int32 Tier) {
+    UpgradeTiers[UpgradeType] = Tier;
+}

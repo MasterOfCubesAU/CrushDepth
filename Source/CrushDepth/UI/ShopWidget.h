@@ -166,8 +166,6 @@ private:
 		{"TaskRate", "Reliability"},
 		{"Money", "Money Boost"},
 		{"SubmarineDescent", "Submarine Descent"},
-		{"OxygenEffectiveness", "Oxygen Tank Effectiveness"},
-		{"MaxOxygen", "Max Oxygen Supply"}
 	};
 	TMap<FString, FString> Descriptions = {
 		{"Health", "Increase the integrity of the submarine structure to be more durable against failures"},
@@ -175,17 +173,13 @@ private:
 		{"TaskRate", "Issues within the submarine occur less frequently."},
 		{"Money", "Increase the rate at which you earn money within the submarine"},
 		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean"},
-		{"Oxygen", "Decrease rate of oxygen depletion"},
-		{"MaxOxygen", "Increase max oxygen"}
 	};
 	TMap<FString, TArray<int32>> Costs = {
-		{"Health", TArray<int32>{6, 8}},
+		{"Health", TArray<int32>{1, 2}},
 		{"Speed", TArray<int32>{3, 5}},
 		{"TaskRate", TArray<int32>{4, 7}},
 		{"Money", TArray<int32>{4, 6}},
 		{"SubmarineDescent", TArray<int32>{4, 6}},
-		{"OxygenEffectivness", TArray<int32>{4, 6}},
-		{"MaxOxygen", TArray<int32>{4, 6}}
 	};
 
 	FString CurrentHoveredButton;
