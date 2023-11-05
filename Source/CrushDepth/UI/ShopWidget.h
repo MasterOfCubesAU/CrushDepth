@@ -170,7 +170,7 @@ private:
 	TMap<FString, FString> Descriptions = {
 		{"Health", "Increase the integrity of the submarine structure to be more durable against failures"},
 		{"Speed", "Increase your manoeuvrability within the submarine"},
-		{"TaskRate", "Issues within the submarine occur less frequently."},
+		{"TaskRate", "Issues within the submarine occur less frequently"},
 		{"Money", "Increase the rate at which you earn money within the submarine"},
 		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean"},
 	};
