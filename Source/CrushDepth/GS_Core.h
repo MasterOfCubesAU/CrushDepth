@@ -43,6 +43,9 @@ private:
 		{"SubmarineDescent", 0},
 	};
 
+	// Tasks
+	float TaskRate;
+
 public:
 	AGS_Core();
 
@@ -98,4 +101,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Shop")
 	void SetUpgradeTier(FString UpgradeType, int32 Tier);
+
+	// Tasks
+	UFUNCTION(BlueprintCallable, Category = "Tasks")
+	float GetTaskRate();
+
+	UFUNCTION(BlueprintCallable, Category = "Tasks")
+	void SetTaskRate(float NewRate);
 };

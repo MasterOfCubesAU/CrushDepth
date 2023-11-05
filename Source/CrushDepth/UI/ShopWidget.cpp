@@ -172,7 +172,7 @@ void UShopWidget::OnUpgradeButtonClicked() {
 	CancelButton->SetVisibility(ESlateVisibility::Visible);
 	CancelButtonText->SetVisibility(ESlateVisibility::Visible);
 
-	DescriptionText->SetText(FText::FromString("Would you like to buy this item?"));
+	DescriptionText->SetText(FText::FromString("Would you like to buy this item"));
 	DescriptionText->SetVisibility(ESlateVisibility::Visible);
 }
 
@@ -235,8 +235,8 @@ void UShopWidget::OnBuyButtonClicked() {
 		} else {
 			TaskRateUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["TaskRate"][GameState->GetUpgradeTier("TaskRate")])));
 		}
-		float CurrentTaskRate = UGlobalVariablesLibrary::GetTaskSpawnRate();
-		UGlobalVariablesLibrary::SetTaskSpawnRate(CurrentTaskRate + 1);
+		float CurrentTaskRate = GameState->GetTaskRate();
+		GameState->SetTaskRate(CurrentTaskRate * 1.1);
 
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
