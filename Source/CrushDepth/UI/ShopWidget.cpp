@@ -220,6 +220,9 @@ void UShopWidget::OnBuyButtonClicked() {
 		} else {
 			SpeedUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["Speed"][GameState->GetUpgradeTier("Speed")])));
 		}
+		ACD_PlayerState* const PlayerState = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState);
+		PlayerState->SetPlayerSpeed(PlayerState->GetPlayerSpeed() * 1.1);
+
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
