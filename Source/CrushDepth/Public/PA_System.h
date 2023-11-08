@@ -27,7 +27,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
-	USoundBase* sound;
+	TMap<FString, USoundBase*> sounds = {
+		{"computer_malfunction", nullptr},
+		{"engine_failure", nullptr},
+		{"initiate_dive", nullptr},
+		{"initiate_surface", nullptr},
+		{"oxygen_failure", nullptr},
+		{"power_system", nullptr},
+		{"presure_destabilisation", nullptr},
+		{"surfaced", nullptr}
+	};
 
 	UFUNCTION(BlueprintCallable, Category="PA System")
 	void PlayAnnouncement(FString name);
