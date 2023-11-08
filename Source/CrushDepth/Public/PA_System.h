@@ -36,7 +36,9 @@ public:
 		{"oxygen_failure", nullptr},
 		{"power_system", nullptr},
 		{"presure_destabilisation", nullptr},
-		{"surfaced", nullptr}
+		{"surfaced", nullptr},
+		{"leak_detected", nullptr},
+		{"fire_presence", nullptr}
 	};
 
 	UFUNCTION(BlueprintCallable, Category="PA System")
