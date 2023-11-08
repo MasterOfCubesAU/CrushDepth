@@ -17,6 +17,7 @@ void APA_System::BeginPlay()
 {
 	Super::BeginPlay();
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("PA_Loudspeaker"), this->speakers);
+	UE_LOG(LogTemp, Warning, TEXT("Found %d speakers."), this->speakers.Num());
 	
 }
 
@@ -29,12 +30,18 @@ void APA_System::Tick(float DeltaTime)
 
 void APA_System::PlayAnnouncement(FString name)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%p"), this->sounds[name]);
 	if (this->sounds[name] != nullptr)
 	{
 		for (AActor* speaker : this->speakers)
 		{
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), this->sounds[name], speaker->GetActorLocation());
+			for (UActorComponent* component : speaker->GetComponents()) {
+				if (component->GetName() == "Audio")
+				{
+					((UAudioComponent*)component)->SetSound(this->sounds[name]);
+					((UAudioComponent*)component)->Play();
+					continue;
+				}
+			}
 		}
 	}
 
