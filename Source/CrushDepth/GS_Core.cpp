@@ -71,6 +71,7 @@ void AGS_Core::StartDescent() {
         &AGS_Core::DoDive,
         1.0f,
         true);
+    this->OnStartDive();
 }
 
 void AGS_Core::DoDive() {
@@ -83,6 +84,8 @@ void AGS_Core::DoDive() {
     {
         this->CurrentSubmarineState = SubmarineStates::Surfaced;
         GetWorld()->GetTimerManager().ClearTimer(DiveTimer);
+        this->OnSurface();
+        ((APA_System*)UGameplayStatics::GetActorOfClass(GetWorld(), APA_System::StaticClass()))->PlayAnnouncement("surfaced");
     }
     // Update best attempt
     if (this->CurrentSubmarineDepth > this->CurrentBestAttempt)
@@ -112,6 +115,7 @@ void AGS_Core::DoDive() {
 
 void AGS_Core::StartAscent() {
     this->CurrentSubmarineState = SubmarineStates::Ascending;
+    this->OnStartAscent();
 }
 
 void AGS_Core::SetAscentRate(float NewRate) {
