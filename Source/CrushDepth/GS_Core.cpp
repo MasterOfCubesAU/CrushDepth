@@ -84,6 +84,7 @@ void AGS_Core::DoDive() {
     {
         this->CurrentSubmarineState = SubmarineStates::Surfaced;
         GetWorld()->GetTimerManager().ClearTimer(DiveTimer);
+        this->SetSubmarineHealth(this->SubmarineStartHealth);
         this->OnSurface();
         ((APA_System*)UGameplayStatics::GetActorOfClass(GetWorld(), APA_System::StaticClass()))->PlayAnnouncement("surfaced");
     }
