@@ -4,6 +4,9 @@
 #include "GS_Core.h"
 
 AGS_Core::AGS_Core() {
+    // Setup oxygen system
+    this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
+
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineStartHealth"), this->SubmarineStartHealth, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineAscentRate"), this->AscentRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineDescentRate"), this->DescentRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
@@ -85,6 +88,11 @@ void AGS_Core::DoDive() {
         this->CurrentSubmarineState = SubmarineStates::Surfaced;
         GetWorld()->GetTimerManager().ClearTimer(DiveTimer);
         this->SetSubmarineHealth(this->SubmarineStartHealth);
+        if (this->oxygen == nullptr)
+        {
+            this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
+        }
+        this->oxygen->SetCurrentOxygen(this->oxygen->GetMaxOxygen());
         this->OnSurface();
         ((APA_System*)UGameplayStatics::GetActorOfClass(GetWorld(), APA_System::StaticClass()))->PlayAnnouncement("surfaced");
     }
@@ -93,6 +101,17 @@ void AGS_Core::DoDive() {
     {
         this->CurrentBestAttempt = this->CurrentSubmarineDepth;
     }
+    
+    // Update oxygen
+    if (this->CurrentSubmarineState != SubmarineStates::Surfaced)
+    {
+        if (this->oxygen == nullptr)
+        {
+            this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
+        }
+        this->oxygen->ConsumeOxygen();
+    }
+
     // Update player money
     // Don't distribute money if less than midpoint of current best attempt.
     if (this->CurrentSubmarineState != SubmarineStates::Descending || this->CurrentSubmarineDepth <= this->CurrentBestAttempt / 2.f)
