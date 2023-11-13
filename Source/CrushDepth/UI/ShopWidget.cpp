@@ -62,6 +62,14 @@ void UShopWidget::NativeConstruct() {
 		SubmarineDescentUpgradeTiers[i]->SetIsChecked(true);
 	}
 
+	MaxOxygenUpgradeButton->SetButtonName("MaxOxygen");
+	MaxOxygenUpgradeButton->SetShopWidgetInstance(this);
+	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox1);
+	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox2);
+	for (auto i = 0; i < GameState->GetUpgradeTier("MaxOxygen"); ++i) {
+		MaxOxygenUpgradeTiers[i]->SetIsChecked(true);
+	}
+
 	FString MoneyString = "$";
 	int32 RoundMoney = FMath::FloorToInt((((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance()));
 	MoneyText->SetText(FText::FromString(MoneyString + FString::FromInt(RoundMoney)));
@@ -95,6 +103,12 @@ void UShopWidget::NativeConstruct() {
 		SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
 		SubmarineDescentUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["SubmarineDescent"][0])));
+	}
+
+	if (GameState->GetUpgradeTier("MaxOxygen") == Costs["MaxOxygen"].Num()) {
+		MaxOxygenUpgradeCost->SetText(FText::FromString("MAX"));
+	} else {
+		MaxOxygenUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["MaxOxygen"][0])));
 	}
 
 	// Conditions for upgrade buttons 
@@ -131,6 +145,13 @@ void UShopWidget::NativeConstruct() {
 		SubmarineDescentUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
 
 		SubmarineDescentUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
+	}
+
+	if (MaxOxygenUpgradeButton) {
+		MaxOxygenUpgradeButton->OnHovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonHovered);
+		MaxOxygenUpgradeButton->OnUnhovered.AddDynamic(this, &UShopWidget::OnUpgradeButtonUnhovered);
+
+		MaxOxygenUpgradeButton->OnClicked.AddDynamic(this, &UShopWidget::OnUpgradeButtonClicked);
 	}
 
 	if (BuyButton) {
@@ -183,17 +204,25 @@ void UShopWidget::OnBuyButtonClicked() {
 	FString DollarSign = TEXT("$");
 	int32 NewMoney;
 	FString NewMoneyString;
+	float CurrentCost;
 
 	if (UShopWidget::GetCurrentClickedButton() == "Health") {
-		float CurrentCost = Costs["Health"][GameState->GetUpgradeTier("Health")];
-
 		// If no more upgrade tiers, the buy button does nothing
-		if (GameState->GetUpgradeTier("Health") == Costs["Health"].Num() || CurrentCost > Money) return;
+		if (GameState->GetUpgradeTier("Health") == Costs["Health"].Num()) return;
+
+		// If not enough money, buy button does nothing
+		CurrentCost = Costs["Health"][GameState->GetUpgradeTier("Health")];
+		if (CurrentCost > Money) return;
 		
 		// Tick the corresponding check box
 		HealthUpgradeTiers[GameState->GetUpgradeTier("Health")]->SetIsChecked(true);
 		GameState->SetUpgradeTier("Health", GameState->GetUpgradeTier("Health") + 1);
 
+		FString tier = FString::FromInt(GameState->GetUpgradeTier("Health"));
+		FString num = FString::FromInt(Costs["Health"].Num());
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (TEXT("%s = StringVariable"), tier));
+			
 		// If there are no more tiers, set the text to MAX, otherwise change cost 
 		if (GameState->GetUpgradeTier("Health") == Costs["Health"].Num()) {
 			HealthUpgradeCost->SetText(FText::FromString("MAX"));
@@ -209,8 +238,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Speed") {
-		float CurrentCost = Costs["Speed"][GameState->GetUpgradeTier("Speed")];
-		if (GameState->GetUpgradeTier("Speed") == Costs["Speed"].Num() || CurrentCost > Money) return;
+		if (GameState->GetUpgradeTier("Speed") == Costs["Speed"].Num()) return;
+
+		CurrentCost = Costs["Speed"][GameState->GetUpgradeTier("Speed")];
+		if (CurrentCost > Money) return;
 
 		SpeedUpgradeTiers[GameState->GetUpgradeTier("Speed")]->SetIsChecked(true);
 		GameState->SetUpgradeTier("Speed", GameState->GetUpgradeTier("Speed") + 1);
@@ -227,8 +258,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "TaskRate") {
-		float CurrentCost = Costs["TaskRate"][GameState->GetUpgradeTier("TaskRate")];
-		if (GameState->GetUpgradeTier("TaskRate") == Costs["TaskRate"].Num() || CurrentCost > Money) return;
+		if (GameState->GetUpgradeTier("TaskRate") == Costs["TaskRate"].Num()) return;
+
+		CurrentCost = Costs["TaskRate"][GameState->GetUpgradeTier("TaskRate")];
+		if (CurrentCost > Money) return;
 
 		TaskRateUpgradeTiers[GameState->GetUpgradeTier("TaskRate")]->SetIsChecked(true);
 		GameState->SetUpgradeTier("TaskRate", GameState->GetUpgradeTier("TaskRate") + 1);
@@ -245,8 +278,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "Money") {
-		float CurrentCost = Costs["Money"][GameState->GetUpgradeTier("Money")];
-		if (GameState->GetUpgradeTier("Money") == Costs["Money"].Num() || CurrentCost > Money) return;
+		if (GameState->GetUpgradeTier("Money") == Costs["Money"].Num()) return;
+
+		CurrentCost = Costs["Money"][GameState->GetUpgradeTier("Money")];
+		if (CurrentCost > Money) return;
 
 		MoneyUpgradeTiers[GameState->GetUpgradeTier("Money")]->SetIsChecked(true);
 		GameState->SetUpgradeTier("Money", GameState->GetUpgradeTier("Money") + 1);
@@ -263,8 +298,10 @@ void UShopWidget::OnBuyButtonClicked() {
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
 	else if (UShopWidget::GetCurrentClickedButton() == "SubmarineDescent") {
-		float CurrentCost = Costs["SubmarineDescent"][GameState->GetUpgradeTier("SubmarineDescent")];
-		if (GameState->GetUpgradeTier("SubmarineDescent") == Costs["SubmarineDescent"].Num() || CurrentCost > Money) return;
+		if (GameState->GetUpgradeTier("SubmarineDescent") == Costs["SubmarineDescent"].Num()) return;
+
+		CurrentCost = Costs["SubmarineDescent"][GameState->GetUpgradeTier("SubmarineDescent")];
+		if (CurrentCost > Money) return;
 
 		SubmarineDescentUpgradeTiers[GameState->GetUpgradeTier("SubmarineDescent")]->SetIsChecked(true);
 		GameState->SetUpgradeTier("SubmarineDescent", GameState->GetUpgradeTier("SubmarineDescent") + 1);
@@ -277,6 +314,24 @@ void UShopWidget::OnBuyButtonClicked() {
 
 		float CurrentDescentRate = GameState->GetDescentRate();
 		GameState->SetDescentRate(CurrentDescentRate * 1.2);
+		NewMoney = Money - CurrentCost;
+		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
+	}
+	else if (UShopWidget::GetCurrentClickedButton() == "MaxOxygen") {
+		if (GameState->GetUpgradeTier("MaxOxygen") == Costs["MaxOxygen"].Num()) return;
+
+		CurrentCost = Costs["MaxOxygen"][GameState->GetUpgradeTier("MaxOxygen")];
+		if (CurrentCost > Money) return;
+
+		MaxOxygenUpgradeTiers[GameState->GetUpgradeTier("MaxOxygen")]->SetIsChecked(true);
+		GameState->SetUpgradeTier("MaxOxygen", GameState->GetUpgradeTier("MaxOxygen") + 1);
+
+		if (GameState->GetUpgradeTier("MaxOxygen") == Costs["MaxOxygen"].Num()) {
+			MaxOxygenUpgradeCost->SetText(FText::FromString("MAX"));
+		} else {
+			MaxOxygenUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["MaxOxygen"][GameState->GetUpgradeTier("MaxOxygen")])));
+		}
+
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}

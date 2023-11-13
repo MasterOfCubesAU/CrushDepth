@@ -17,6 +17,7 @@ AGS_Core::AGS_Core() {
 		{"TaskRate", 0},
 		{"Money", 0},
 		{"SubmarineDescent", 0},
+        {"MaxOxygen", 0},
 	};
     this->TaskRate = 0.f;
     GConfig->GetFloat(TEXT("Player"), TEXT("MoneyGenerationRate"), this->MoneyRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));

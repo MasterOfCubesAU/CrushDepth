@@ -135,6 +135,12 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox2;
 
+	// ALL MAXIMUM OXYGEN UPGRADE PROPERTIES
+	UPROPERTY(meta = (BindWidget)) class UUpgradeButton*MaxOxygenUpgradeButton;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock*MaxOxygenUpgradeCost;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox1;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox2;
+
 	// Buy and Cancel Button Components 
 	UPROPERTY(meta = (BindWidget))
 		class UButton* BuyButton;
@@ -166,6 +172,7 @@ private:
 		{"TaskRate", "Reliability"},
 		{"Money", "Money Boost"},
 		{"SubmarineDescent", "Submarine Descent"},
+		{"MaxOxygen", "Maximum Oxygen"},
 	};
 	TMap<FString, FString> Descriptions = {
 		{"Health", "Increase the integrity of the submarine structure to be more durable against failures"},
@@ -173,6 +180,7 @@ private:
 		{"TaskRate", "Issues within the submarine occur less frequently"},
 		{"Money", "Increase the rate at which you earn money within the submarine"},
 		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean"},
+		{"MaxOxygen", "Increase maximum oxygen available within the submarine"},
 	};
 	TMap<FString, TArray<int32>> Costs = {
 		{"Health", TArray<int32>{1, 2}},
@@ -180,6 +188,7 @@ private:
 		{"TaskRate", TArray<int32>{4, 7}},
 		{"Money", TArray<int32>{4, 6}},
 		{"SubmarineDescent", TArray<int32>{4, 6}},
+		{"MaxOxygen", TArray<int32>{4, 6}},
 	};
 
 	FString CurrentHoveredButton;
@@ -190,4 +199,5 @@ private:
 	TArray<class UCheckBox*> TaskRateUpgradeTiers;
 	TArray<class UCheckBox*> MoneyUpgradeTiers;
 	TArray<class UCheckBox*> SubmarineDescentUpgradeTiers;
+	TArray<class UCheckBox*> MaxOxygenUpgradeTiers;
 };
