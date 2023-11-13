@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "SubmarineStatesEnum.h"
 #include "CD_PlayerState.h"
+#include "Kismet/GameplayStatics.h"
+#include "Public/PA_System.h"
 #include "GS_Core.generated.h"
 
 /**
@@ -82,4 +84,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void SetMoneyRate(float NewRate);
+
+	// Events
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnSurface();
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnStartDive();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnStartAscent();
 };
