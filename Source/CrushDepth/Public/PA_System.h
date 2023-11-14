@@ -38,7 +38,8 @@ public:
 		{"presure_destabilisation", nullptr},
 		{"surfaced", nullptr},
 		{"leak_detected", nullptr},
-		{"fire_presence", nullptr}
+		{"fire_presence", nullptr},
+		{"calibration_error", nullptr}
 	};
 
 	UFUNCTION(BlueprintCallable, Category="PA System")

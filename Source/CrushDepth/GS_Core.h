@@ -8,6 +8,7 @@
 #include "CD_PlayerState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Public/PA_System.h"
+#include "Public/Oxygen_System.h"
 #include "GS_Core.generated.h"
 
 /**
@@ -38,6 +39,10 @@ private:
 
 public:
 	AGS_Core();
+
+	// Oxygen
+	UPROPERTY(BlueprintReadWrite)
+	UOxygen_System* oxygen;
 
 	// Submarine Health
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
@@ -89,9 +94,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnSurface();
 
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnStartDive();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnStartAscent();
+
+	
 };
