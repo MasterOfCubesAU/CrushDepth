@@ -64,6 +64,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
 	void SubtractSubmarineHealth(float Amount);
 
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	float GetSubmarineStartHealth();
+	UFUNCTION(BlueprintCallable, Category = "Submarine")
+	void SetSubmarineStartHealth(float NewHealth);
+
 
 	// Submarine Depth
 	UFUNCTION(BlueprintCallable, Category = "Submarine")

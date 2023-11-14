@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include <Components/TextBlock.h>
 #include "Components/Button.h"
+#include "Oxygen_System.h"
 #include "ShopWidget.generated.h"
 
 
@@ -63,6 +64,11 @@ class CRUSHDEPTH_API UShopWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	// Oxygen
+	UPROPERTY(BlueprintReadWrite)
+	UOxygen_System* oxygen;
+
 	void SetDescriptionText(FString description) {
 		DescriptionText->SetText(FText::FromString(description));
 		DescriptionText->SetVisibility(ESlateVisibility::Visible);

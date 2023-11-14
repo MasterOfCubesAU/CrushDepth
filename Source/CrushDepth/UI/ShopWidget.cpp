@@ -199,6 +199,7 @@ void UShopWidget::OnUpgradeButtonClicked() {
 
 
 void UShopWidget::OnBuyButtonClicked() {
+	this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
 	AGS_Core* const GameState = GetWorld() != NULL ? GetWorld()->GetGameState<AGS_Core>() : NULL;
 	float Money = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState)->wallet->GetBalance();
 	FString DollarSign = TEXT("$");
@@ -232,8 +233,8 @@ void UShopWidget::OnBuyButtonClicked() {
 			HealthUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["Health"][GameState->GetUpgradeTier("Health")])));
 		}
 
-		float CurrentSubmarineHealth = GameState->GetSubmarineHealth();
-		GameState->SetSubmarineHealth(CurrentSubmarineHealth * 1.2);
+		float CurrentSubmarineStartHealth = GameState->GetSubmarineStartHealth();
+		GameState->SetSubmarineStartHealth(CurrentSubmarineStartHealth * 1.2);
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
@@ -332,6 +333,8 @@ void UShopWidget::OnBuyButtonClicked() {
 			MaxOxygenUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["MaxOxygen"][GameState->GetUpgradeTier("MaxOxygen")])));
 		}
 
+		float CurrentMaxOxygen = this->oxygen->GetMaxOxygen();
+		this->oxygen->SetMaxOxygen(CurrentMaxOxygen * 2);
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}

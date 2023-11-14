@@ -42,6 +42,14 @@ void AGS_Core::SubtractSubmarineHealth(float Amount) {
     this->SetSubmarineHealth(this->CurrentSubmarineHealth - Amount);
 };
 
+float AGS_Core::GetSubmarineStartHealth() {
+    return this->SubmarineStartHealth;
+};
+
+void AGS_Core::SetSubmarineStartHealth(float NewHealth) {
+    this->SubmarineStartHealth = std::max(0.f, NewHealth);
+};
+
 // Submarine Depth
 
 float AGS_Core::GetSubmarineDepth() {
