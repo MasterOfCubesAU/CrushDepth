@@ -26,6 +26,15 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	UWallet* wallet;
 
+	UPROPERTY(BlueprintReadWrite)
+	float PlayerSpeed;
+
+	UFUNCTION(BlueprintCallable)
+	float GetPlayerSpeed();
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerSpeed(float NewSpeed);
+
 private:
 	PlayerStates state;
 };
