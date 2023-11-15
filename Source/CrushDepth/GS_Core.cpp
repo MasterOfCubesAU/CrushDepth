@@ -14,6 +14,15 @@ AGS_Core::AGS_Core() {
     this->CurrentSubmarineDepth = 0.f;
     this->CurrentBestAttempt = CurrentSubmarineDepth;
     this->CurrentSubmarineState = SubmarineStates::Surfaced;
+    this->UpgradeTiers = {
+		{"Health", 0},
+		{"Speed", 0},
+		{"TaskRate", 0},
+		{"Money", 0},
+		{"SubmarineDescent", 0},
+        {"MaxOxygen", 0},
+	};
+    this->TaskRate = 0.f;
     GConfig->GetFloat(TEXT("Player"), TEXT("MoneyGenerationRate"), this->MoneyRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     // Seed random
     srand(time(0));
@@ -31,6 +40,14 @@ void AGS_Core::SetSubmarineHealth(float NewHealth) {
 
 void AGS_Core::SubtractSubmarineHealth(float Amount) {
     this->SetSubmarineHealth(this->CurrentSubmarineHealth - Amount);
+};
+
+float AGS_Core::GetSubmarineStartHealth() {
+    return this->SubmarineStartHealth;
+};
+
+void AGS_Core::SetSubmarineStartHealth(float NewHealth) {
+    this->SubmarineStartHealth = std::max(0.f, NewHealth);
 };
 
 // Submarine Depth
@@ -176,4 +193,20 @@ float AGS_Core::GetMoneyRate() {
 
 void AGS_Core::SetMoneyRate(float NewRate) {
     this->MoneyRate = NewRate;
+}
+
+int32 AGS_Core::GetUpgradeTier(FString UpgradeType) {
+    return UpgradeTiers[UpgradeType];
+}
+
+void AGS_Core::SetUpgradeTier(FString UpgradeType, int32 Tier) {
+    this->UpgradeTiers[UpgradeType] = Tier;
+}
+
+float AGS_Core::GetTaskRate() {
+    return TaskRate;
+}
+
+void AGS_Core::SetTaskRate(float NewRate) {
+    this->TaskRate = NewRate;
 }

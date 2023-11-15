@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include <Components/TextBlock.h>
 #include "Components/Button.h"
+#include "Oxygen_System.h"
 #include "ShopWidget.generated.h"
 
 
@@ -63,6 +64,11 @@ class CRUSHDEPTH_API UShopWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	// Oxygen
+	UPROPERTY(BlueprintReadWrite)
+	UOxygen_System* oxygen;
+
 	void SetDescriptionText(FString description) {
 		DescriptionText->SetText(FText::FromString(description));
 		DescriptionText->SetVisibility(ESlateVisibility::Visible);
@@ -135,6 +141,12 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SubmarineDescentUpgradeCheckbox2;
 
+	// ALL MAXIMUM OXYGEN UPGRADE PROPERTIES
+	UPROPERTY(meta = (BindWidget)) class UUpgradeButton*MaxOxygenUpgradeButton;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock*MaxOxygenUpgradeCost;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox1;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox2;
+
 	// Buy and Cancel Button Components 
 	UPROPERTY(meta = (BindWidget))
 		class UButton* BuyButton;
@@ -166,26 +178,23 @@ private:
 		{"TaskRate", "Reliability"},
 		{"Money", "Money Boost"},
 		{"SubmarineDescent", "Submarine Descent"},
-		{"OxygenEffectiveness", "Oxygen Tank Effectiveness"},
-		{"MaxOxygen", "Max Oxygen Supply"}
+		{"MaxOxygen", "Maximum Oxygen"},
 	};
 	TMap<FString, FString> Descriptions = {
 		{"Health", "Increase the integrity of the submarine structure to be more durable against failures"},
 		{"Speed", "Increase your manoeuvrability within the submarine"},
-		{"TaskRate", "Issues within the submarine occur less frequently."},
+		{"TaskRate", "Issues within the submarine occur less frequently"},
 		{"Money", "Increase the rate at which you earn money within the submarine"},
 		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean"},
-		{"Oxygen", "Decrease rate of oxygen depletion"},
-		{"MaxOxygen", "Increase max oxygen"}
+		{"MaxOxygen", "Increase maximum oxygen available within the submarine"},
 	};
 	TMap<FString, TArray<int32>> Costs = {
-		{"Health", TArray<int32>{6, 8}},
+		{"Health", TArray<int32>{1, 2}},
 		{"Speed", TArray<int32>{3, 5}},
 		{"TaskRate", TArray<int32>{4, 7}},
 		{"Money", TArray<int32>{4, 6}},
 		{"SubmarineDescent", TArray<int32>{4, 6}},
-		{"OxygenEffectivness", TArray<int32>{4, 6}},
-		{"MaxOxygen", TArray<int32>{4, 6}}
+		{"MaxOxygen", TArray<int32>{4, 6}},
 	};
 
 	FString CurrentHoveredButton;
@@ -196,4 +205,5 @@ private:
 	TArray<class UCheckBox*> TaskRateUpgradeTiers;
 	TArray<class UCheckBox*> MoneyUpgradeTiers;
 	TArray<class UCheckBox*> SubmarineDescentUpgradeTiers;
+	TArray<class UCheckBox*> MaxOxygenUpgradeTiers;
 };

@@ -26,7 +26,7 @@ float UOxygen_System::GetMaxOxygen() {
 	return this->MaxOxygen;
 }
 void UOxygen_System::SetMaxOxygen(float Amount) {
-	this->DepletionRate = std::max(0.f, Amount);
+	this->MaxOxygen = std::max(0.f, Amount);
 }
 
 float UOxygen_System::GetDepletionRate() { return this->DepletionRate; }
