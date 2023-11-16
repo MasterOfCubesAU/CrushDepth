@@ -234,7 +234,9 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 
 		float CurrentSubmarineStartHealth = GameState->GetSubmarineStartHealth();
-		GameState->SetSubmarineStartHealth(CurrentSubmarineStartHealth * 1.2);
+		float NewHealth = CurrentSubmarineStartHealth * 1.2;
+		GameState->SetSubmarineStartHealth(NewHealth);
+		GameState->SetSubmarineHealth(NewHealth);
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
@@ -334,7 +336,9 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 
 		float CurrentMaxOxygen = this->oxygen->GetMaxOxygen();
-		this->oxygen->SetMaxOxygen(CurrentMaxOxygen * 2);
+		float NewOxygen = CurrentMaxOxygen * 2;
+		this->oxygen->SetMaxOxygen(NewOxygen);
+		this->oxygen->SetCurrentOxygen(NewOxygen);
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
