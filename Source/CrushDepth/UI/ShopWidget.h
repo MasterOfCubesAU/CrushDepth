@@ -116,24 +116,30 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* HealthUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* HealthUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* HealthUpgradeCheckbox2;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* HealthUpgradeCheckbox3;
 
 	// ALL SPEED UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* SpeedUpgradeButton;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* SpeedUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SpeedUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* SpeedUpgradeCheckbox2;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* SpeedUpgradeCheckbox3;
 
 	// ALL DECREASE TASK RATE UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* TaskRateUpgradeButton;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* TaskRateUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox2;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox3;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox4;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* TaskRateUpgradeCheckbox5;
 
 	// ALL DECREASE MONEY UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* MoneyUpgradeButton;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* MoneyUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox2;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox* MoneyUpgradeCheckbox3;
 
 	// ALL DECREASE SUBMARINE DESCENT UPGRADE PROPERTIES
 	UPROPERTY(meta = (BindWidget)) class UUpgradeButton* SubmarineDescentUpgradeButton;
@@ -146,6 +152,8 @@ protected:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock*MaxOxygenUpgradeCost;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox1;
 	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox2;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox3;
+	UPROPERTY(meta = (BindWidget)) class UCheckBox*MaxOxygenUpgradeCheckbox4;
 
 	// Buy and Cancel Button Components 
 	UPROPERTY(meta = (BindWidget))
@@ -189,12 +197,12 @@ private:
 		{"MaxOxygen", "Increase maximum oxygen available within the submarine"},
 	};
 	TMap<FString, TArray<int32>> Costs = {
-		{"Health", TArray<int32>{1, 2}},
-		{"Speed", TArray<int32>{3, 5}},
-		{"TaskRate", TArray<int32>{4, 7}},
-		{"Money", TArray<int32>{4, 6}},
-		{"SubmarineDescent", TArray<int32>{4, 6}},
-		{"MaxOxygen", TArray<int32>{4, 6}},
+		{"Health", TArray<int32>{40, 70, 140}},
+		{"Speed", TArray<int32>{20, 50, 100}},
+		{"TaskRate", TArray<int32>{15, 35, 60, 100, 150}},
+		{"Money", TArray<int32>{35, 75, 120}},
+		{"SubmarineDescent", TArray<int32>{15, 40}},
+		{"MaxOxygen", TArray<int32>{15, 25, 45, 90}},
 	};
 
 	FString CurrentHoveredButton;

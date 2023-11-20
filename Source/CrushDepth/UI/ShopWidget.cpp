@@ -26,6 +26,7 @@ void UShopWidget::NativeConstruct() {
 	HealthUpgradeButton->SetShopWidgetInstance(this);
 	HealthUpgradeTiers.Add(HealthUpgradeCheckbox1);
 	HealthUpgradeTiers.Add(HealthUpgradeCheckbox2);
+	HealthUpgradeTiers.Add(HealthUpgradeCheckbox3);
 	for (auto i = 0; i < GameState->GetUpgradeTier("Health"); ++i) {
 		HealthUpgradeTiers[i]->SetIsChecked(true);
 	}
@@ -34,6 +35,7 @@ void UShopWidget::NativeConstruct() {
 	SpeedUpgradeButton->SetShopWidgetInstance(this);
 	SpeedUpgradeTiers.Add(SpeedUpgradeCheckbox1);
 	SpeedUpgradeTiers.Add(SpeedUpgradeCheckbox2);
+	SpeedUpgradeTiers.Add(SpeedUpgradeCheckbox3);
 	for (auto i = 0; i < GameState->GetUpgradeTier("Speed"); ++i) {
 		SpeedUpgradeTiers[i]->SetIsChecked(true);
 	}
@@ -42,6 +44,9 @@ void UShopWidget::NativeConstruct() {
 	TaskRateUpgradeButton->SetShopWidgetInstance(this);
 	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox1);
 	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox2);
+	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox3);
+	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox4);
+	TaskRateUpgradeTiers.Add(TaskRateUpgradeCheckbox5);
 	for (auto i = 0; i < GameState->GetUpgradeTier("TaskRate"); ++i) {
 		TaskRateUpgradeTiers[i]->SetIsChecked(true);
 	}
@@ -50,6 +55,7 @@ void UShopWidget::NativeConstruct() {
 	MoneyUpgradeButton->SetShopWidgetInstance(this);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox1);
 	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox2);
+	MoneyUpgradeTiers.Add(MoneyUpgradeCheckbox3);
 	for (auto i = 0; i < GameState->GetUpgradeTier("Money"); ++i) {
 		MoneyUpgradeTiers[i]->SetIsChecked(true);
 	}
@@ -66,6 +72,8 @@ void UShopWidget::NativeConstruct() {
 	MaxOxygenUpgradeButton->SetShopWidgetInstance(this);
 	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox1);
 	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox2);
+	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox3);
+	MaxOxygenUpgradeTiers.Add(MaxOxygenUpgradeCheckbox4);
 	for (auto i = 0; i < GameState->GetUpgradeTier("MaxOxygen"); ++i) {
 		MaxOxygenUpgradeTiers[i]->SetIsChecked(true);
 	}
@@ -234,7 +242,7 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 
 		float CurrentSubmarineStartHealth = GameState->GetSubmarineStartHealth();
-		float NewHealth = CurrentSubmarineStartHealth * 1.2;
+		float NewHealth = CurrentSubmarineStartHealth * 1.4;
 		GameState->SetSubmarineStartHealth(NewHealth);
 		GameState->SetSubmarineHealth(NewHealth);
 		NewMoney = Money - CurrentCost;
@@ -255,7 +263,7 @@ void UShopWidget::OnBuyButtonClicked() {
 			SpeedUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["Speed"][GameState->GetUpgradeTier("Speed")])));
 		}
 		ACD_PlayerState* const PlayerState = ((ACD_PlayerState*)GetWorld()->GetFirstPlayerController()->PlayerState);
-		PlayerState->SetPlayerSpeed(PlayerState->GetPlayerSpeed() * 1.1);
+		PlayerState->SetPlayerSpeed(PlayerState->GetPlayerSpeed() * 1.15);
 
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
@@ -275,7 +283,7 @@ void UShopWidget::OnBuyButtonClicked() {
 			TaskRateUpgradeCost->SetText(FText::FromString(DollarSign + FString::FromInt(Costs["TaskRate"][GameState->GetUpgradeTier("TaskRate")])));
 		}
 		float CurrentTaskRate = GameState->GetTaskRate();
-		GameState->SetTaskRate(CurrentTaskRate * 1.1);
+		GameState->SetTaskRate(CurrentTaskRate * 1.15);
 
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
@@ -296,7 +304,7 @@ void UShopWidget::OnBuyButtonClicked() {
 		}
 
 		float CurrentMoneyRate = GameState->GetMoneyRate();
-		GameState->SetMoneyRate(CurrentMoneyRate * 1.1);
+		GameState->SetMoneyRate(CurrentMoneyRate * 1.15);
 		NewMoney = Money - CurrentCost;
 		NewMoneyString = FString::FromInt(FMath::FloorToInt(Money - CurrentCost));
 	}
