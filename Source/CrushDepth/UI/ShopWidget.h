@@ -181,7 +181,7 @@ protected:
 
 private:
 	TMap<FString, FString> UpgradeTitles = {
-		{"Health", "Submarine Integrity"},
+		{"Health", "Hull Integrity"},
 		{"Speed", "Agility"},
 		{"TaskRate", "Reliability"},
 		{"Money", "Money Boost"},
@@ -192,9 +192,9 @@ private:
 		{"Health", "Increase the integrity of the submarine structure to be more durable against failures"},
 		{"Speed", "Increase your manoeuvrability within the submarine"},
 		{"TaskRate", "Issues within the submarine occur less frequently"},
-		{"Money", "Increase the rate at which you earn money within the submarine"},
-		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean"},
-		{"MaxOxygen", "Increase maximum oxygen available within the submarine"},
+		{"Money", "Increase the rate at which you earn money whilst descending"},
+		{"SubmarineDescent", "Increase the rate at which the submarine descends into the ocean but be careful because this can make the submarine descend faster than you can handle"},
+		{"MaxOxygen", "Increase the maximum oxygen available within the submarine so you can descend for longer"},
 	};
 	TMap<FString, TArray<int32>> Costs = {
 		{"Health", TArray<int32>{40, 70, 140}},
