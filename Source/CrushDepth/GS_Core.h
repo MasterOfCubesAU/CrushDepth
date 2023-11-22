@@ -49,12 +49,13 @@ private:
 	// Tasks
 	float TaskRate;
 
+	// Oxygen
+	float CurrentOxygen;
+	float MaxOxygen;
+	float DepletionRate;
+
 public:
 	AGS_Core();
-
-	// Oxygen
-	UPROPERTY(BlueprintReadWrite)
-	UOxygen_System* oxygen;
 
 	// Submarine Health
 	UFUNCTION(BlueprintCallable, Category = "Submarine")
@@ -130,6 +131,29 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnStartAscent();
+
+	// Oxygen
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	float GetCurrentOxygen();
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	void SetCurrentOxygen(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	float GetMaxOxygen();
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	void SetMaxOxygen(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	float GetDepletionRate();
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	void SetDepletionRate(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "GSOxygen")
+	void ConsumeOxygen();
+
+	// Oxygen Events
+	UFUNCTION(BlueprintImplementableEvent, Category = "GSOxygen")
+	void OnOxygenFinish();
 
 	
 };
