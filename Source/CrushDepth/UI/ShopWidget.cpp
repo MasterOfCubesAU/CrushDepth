@@ -229,7 +229,6 @@ void UShopWidget::OnBuyButtonClicked() {
 		FString tier = FString::FromInt(GameState->GetUpgradeTier("Health"));
 		FString num = FString::FromInt(Costs["Health"].Num());
 
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, (TEXT("%s = StringVariable"), tier));
 			
 		// If there are no more tiers, set the text to MAX, otherwise change cost 
 		if (GameState->GetUpgradeTier("Health") == Costs["Health"].Num()) {
