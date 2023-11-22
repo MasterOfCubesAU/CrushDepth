@@ -5,7 +5,9 @@
 
 AGS_Core::AGS_Core() {
     // Setup oxygen system
-    this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
+    GConfig->GetFloat(TEXT("Player"), TEXT("OxygenDepletionRate"), this->DepletionRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
+	GConfig->GetFloat(TEXT("Player"), TEXT("PlayerStartOxygen"), this->MaxOxygen, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
+	this->CurrentOxygen = this->MaxOxygen;
 
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineStartHealth"), this->SubmarineStartHealth, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
     GConfig->GetFloat(TEXT("Submarine"), TEXT("SubmarineAscentRate"), this->AscentRate, FPaths::ProjectConfigDir() / TEXT("GlobalVariables.ini"));
@@ -105,11 +107,8 @@ void AGS_Core::DoDive() {
         this->CurrentSubmarineState = SubmarineStates::Surfaced;
         GetWorld()->GetTimerManager().ClearTimer(DiveTimer);
         this->SetSubmarineHealth(this->SubmarineStartHealth);
-        if (this->oxygen == nullptr)
-        {
-            this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
-        }
-        this->oxygen->SetCurrentOxygen(this->oxygen->GetMaxOxygen());
+
+        this->SetCurrentOxygen(this->GetMaxOxygen());
         this->OnSurface();
         ((APA_System*)UGameplayStatics::GetActorOfClass(GetWorld(), APA_System::StaticClass()))->PlayAnnouncement("surfaced");
     }
@@ -122,11 +121,7 @@ void AGS_Core::DoDive() {
     // Update oxygen
     if (this->CurrentSubmarineState != SubmarineStates::Surfaced)
     {
-        if (this->oxygen == nullptr)
-        {
-            this->oxygen = NewObject<UOxygen_System>(UOxygen_System::StaticClass());
-        }
-        this->oxygen->ConsumeOxygen();
+        this->ConsumeOxygen();
     }
 
     // Update player money
@@ -209,4 +204,33 @@ float AGS_Core::GetTaskRate() {
 
 void AGS_Core::SetTaskRate(float NewRate) {
     this->TaskRate = NewRate;
+}
+
+float AGS_Core::GetCurrentOxygen() {
+	return this->CurrentOxygen;
+}
+// Please do not use this function to "deplete" oxygen. Use AGS_Core::ConsumeOxygen() instead.
+void AGS_Core::SetCurrentOxygen(float Amount) {
+	this->CurrentOxygen = std::max(0.f, std::min(Amount, this->MaxOxygen));
+	if (this->CurrentOxygen == 0.f)
+	{
+		this->OnOxygenFinish();
+	}
+}
+
+float AGS_Core::GetMaxOxygen() {
+	return this->MaxOxygen;
+}
+void AGS_Core::SetMaxOxygen(float Amount) {
+	this->MaxOxygen = std::max(0.f, Amount);
+}
+
+float AGS_Core::GetDepletionRate() { return this->DepletionRate; }
+void AGS_Core::SetDepletionRate(float Amount) {
+	this->DepletionRate = std::max(0.f, Amount);
+}
+
+void AGS_Core::ConsumeOxygen()
+{
+	this->SetCurrentOxygen(this->CurrentOxygen - this->DepletionRate);
 }
