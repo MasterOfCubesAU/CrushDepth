@@ -86,37 +86,43 @@ void UShopWidget::NativeConstruct() {
 	if (GameState->GetUpgradeTier("Health") == Costs["Health"].Num()) {
 		HealthUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		HealthUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Health"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("Health");
+		HealthUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Health"][costIndex])));
 	}
 
 	if (GameState->GetUpgradeTier("Speed") == Costs["Speed"].Num()) {
 		SpeedUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		SpeedUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Speed"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("Speed");
+		SpeedUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Speed"][costIndex])));
 	}
 
 	if (GameState->GetUpgradeTier("TaskRate") == Costs["TaskRate"].Num()) {
 		TaskRateUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		TaskRateUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["TaskRate"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("TaskRate");
+		TaskRateUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["TaskRate"][costIndex])));
 	}
 
 	if (GameState->GetUpgradeTier("Money") == Costs["Money"].Num()) {
 		MoneyUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		MoneyUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Money"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("Money");
+		MoneyUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["Money"][costIndex])));
 	}
 
 	if (GameState->GetUpgradeTier("SubmarineDescent") == Costs["SubmarineDescent"].Num()) {
 		SubmarineDescentUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		SubmarineDescentUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["SubmarineDescent"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("SubmarineDescent");
+		SubmarineDescentUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["SubmarineDescent"][costIndex])));
 	}
 
 	if (GameState->GetUpgradeTier("MaxOxygen") == Costs["MaxOxygen"].Num()) {
 		MaxOxygenUpgradeCost->SetText(FText::FromString("MAX"));
 	} else {
-		MaxOxygenUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["MaxOxygen"][0])));
+		int32 costIndex = GameState->GetUpgradeTier("MaxOxygen");
+		MaxOxygenUpgradeCost->SetText(FText::FromString(MoneyString + FString::FromInt(Costs["MaxOxygen"][costIndex])));
 	}
 
 	// Conditions for upgrade buttons 
